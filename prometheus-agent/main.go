@@ -37,8 +37,8 @@ func (m *PrometheusAgnet) Ask(
 	return dag.LLM().
 		WithEnv(env).
 		WithPrompt(`You are an expert on prometheus and TSDB . You have been given
-a prometheus  module that already has tools and the ability to connect to the database to run PromQL queries and more.
-
+a prometheus module that already has tools and the ability to connect to the database to run PromQL queries and more.
+please use the server argument to connect to the server.
 The question is: $question
 
 DO NOT STOP UNTIL YOU HAVE ANSWERED THE QUESTION COMPLETELY.`).

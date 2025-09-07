@@ -36,8 +36,9 @@ type Prometheus struct {
 // PromQl runs an *instant* PromQL query via /api/v1/query (JSON output).
 func (m *Prometheus) PromQl(
 	ctx context.Context,
-	// +default="http://localhost:9090"
+	// 	// prometheus server URL
 	server string,
+	// query in PromQL format
 	promQuery string,
 	// +optional
 	bearer *dagger.Secret,
@@ -64,7 +65,7 @@ func (m *Prometheus) PromQl(
 // FiringAlerts queries the /api/v1/alerts endpoint to list all firing alerts.
 func (m *Prometheus) FiringAlerts(
 	ctx context.Context,
-	// +default="http://localhost:9090"
+	// prometheus server URL
 	server string,
 	// +optional
 	bearer *dagger.Secret,
@@ -92,7 +93,7 @@ func (m *Prometheus) FiringAlerts(
 // Targets queries the /api/v1/targets endpoint to list all targets.
 func (m *Prometheus) Targets(
 	ctx context.Context,
-	// +default="http://localhost:9090"
+	// prometheus server URL
 	server string,
 	// +optional
 	bearer *dagger.Secret,
@@ -115,7 +116,7 @@ func (m *Prometheus) Targets(
 // Rules queries the /api/v1/rules endpoint to list all alerting and recording rules.
 func (m *Prometheus) Rules(
 	ctx context.Context,
-	// +default="http://localhost:9090"
+	//	prometheus server URL
 	server string,
 	// +optional
 	bearer *dagger.Secret,
