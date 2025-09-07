@@ -22,6 +22,7 @@ import (
 )
 
 func New(
+	// prometheus server URL
 	server string,
 ) *Prometheus {
 	return &Prometheus{
@@ -30,6 +31,7 @@ func New(
 }
 
 type Prometheus struct {
+	// prometheus server URL
 	server string // +private
 }
 

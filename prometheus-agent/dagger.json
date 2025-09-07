@@ -8,7 +8,7 @@
     {
       "name": "prometheus",
       "source": "github.com/EladAviczer/daggerverse/prometheus",
-      "pin": "22b3aaedb1e92ad37228fd2983b37b71b86425e0"
+      "pin": "cd6a76583ad69acaeaf03f5b02fd52ee767ce9c0"
     }
   ]
 }
