@@ -22,8 +22,6 @@ import (
 )
 
 func New(
-	// +default="http://localhost:9090"
-	// default Prometheus server URL
 	server string,
 ) *Prometheus {
 	return &Prometheus{
@@ -32,7 +30,7 @@ func New(
 }
 
 type Prometheus struct {
-	server string
+	server string // +private
 }
 
 // PromQl runs an *instant* PromQL query via /api/v1/query (JSON output).

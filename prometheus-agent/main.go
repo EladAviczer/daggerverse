@@ -23,12 +23,25 @@ type PrometheusAgnet struct{}
 // Ask queries the Prometheus server with a natural language question.
 func (m *PrometheusAgnet) Ask(
 	ctx context.Context,
-	// +default="http://localhost:9090"
 	server string,
-	// +default="give me all firing alerts"
 	question string,
 	// // +optional
 	// bearer *dagger.Secret,
 ) (string, error) {
-	prometheus := dag.Prometheus()
+	prom := dag.Prometheus(server)
+
+	env := dag.Env().
+		WithStringInput("question", question, "The question about the prometheus server").
+		WithPrometheusInput("prometheus", prom, "The prometheus module to use for inspecting the promethues server")
+
+	return dag.LLM().
+		WithEnv(env).
+		WithPrompt(`You are an expert on prometheus and TSDB . You have been given
+a prometheus  module that already has tools and the ability to connect to the database to run PromQL queries and more.
+
+The question is: $question
+
+DO NOT STOP UNTIL YOU HAVE ANSWERED THE QUESTION COMPLETELY.`).
+		LastReply(ctx)
+
 }
