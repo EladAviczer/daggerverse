@@ -21,7 +21,19 @@ import (
 	"strings"
 )
 
-type Prometheus struct{}
+func New(
+	// +default="http://localhost:9090"
+	// default Prometheus server URL
+	server string,
+) *Prometheus {
+	return &Prometheus{
+		server: server,
+	}
+}
+
+type Prometheus struct {
+	server string
+}
 
 // PromQl runs an *instant* PromQL query via /api/v1/query (JSON output).
 func (m *Prometheus) PromQl(

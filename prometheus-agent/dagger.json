@@ -1,0 +1,14 @@
+{
+  "name": "prometheus-agnet",
+  "engineVersion": "v0.18.16",
+  "sdk": {
+    "source": "go"
+  },
+  "dependencies": [
+    {
+      "name": "prometheus",
+      "source": "github.com/EladAviczer/daggerverse/prometheus@8ba84e7bfb8f51aa3bce9f0bce94f611586de6db",
+      "pin": "8ba84e7bfb8f51aa3bce9f0bce94f611586de6db"
+    }
+  ]
+}
