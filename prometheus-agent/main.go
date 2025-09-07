@@ -23,7 +23,9 @@ type PrometheusAgnet struct{}
 // Ask queries the Prometheus server with a natural language question.
 func (m *PrometheusAgnet) Ask(
 	ctx context.Context,
+	// the prometheus server URL to use
 	server string,
+	// the natural language question to ask about the prometheus server
 	question string,
 	// // +optional
 	// bearer *dagger.Secret,

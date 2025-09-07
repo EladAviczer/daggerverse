@@ -38,8 +38,6 @@ type Prometheus struct {
 // PromQl runs an *instant* PromQL query via /api/v1/query (JSON output).
 func (m *Prometheus) PromQl(
 	ctx context.Context,
-	// 	// prometheus server URL
-	server string,
 	// query in PromQL format
 	promQuery string,
 	// +optional
@@ -47,7 +45,7 @@ func (m *Prometheus) PromQl(
 ) (string, error) {
 	c := dag.Container().
 		From("curlimages/curl:8.9.1").
-		WithEnvVariable("PROMETHEUS_URL", server).
+		WithEnvVariable("PROMETHEUS_URL", m.server).
 		WithEnvVariable("PROM_QUERY", promQuery)
 
 	if bearer != nil {
@@ -67,12 +65,10 @@ func (m *Prometheus) PromQl(
 // FiringAlerts queries the /api/v1/alerts endpoint to list all firing alerts.
 func (m *Prometheus) FiringAlerts(
 	ctx context.Context,
-	// prometheus server URL
-	server string,
 	// +optional
 	bearer *dagger.Secret,
 ) (string, error) {
-	alertsURL := strings.TrimRight(server, "/") + "/api/v1/alerts"
+	alertsURL := strings.TrimRight(m.server, "/") + "/api/v1/alerts"
 
 	c := dag.Container().From("curlimages/curl:8.9.1")
 
@@ -95,14 +91,12 @@ func (m *Prometheus) FiringAlerts(
 // Targets queries the /api/v1/targets endpoint to list all targets.
 func (m *Prometheus) Targets(
 	ctx context.Context,
-	// prometheus server URL
-	server string,
 	// +optional
 	bearer *dagger.Secret,
 ) (string, error) {
 	c := dag.Container().
 		From("curlimages/curl:8.9.1").
-		WithEnvVariable("PROMETHEUS_URL", server)
+		WithEnvVariable("PROMETHEUS_URL", m.server)
 
 	if bearer != nil {
 		c = c.WithSecretVariable("BEARER", bearer)
@@ -118,14 +112,12 @@ func (m *Prometheus) Targets(
 // Rules queries the /api/v1/rules endpoint to list all alerting and recording rules.
 func (m *Prometheus) Rules(
 	ctx context.Context,
-	//	prometheus server URL
-	server string,
 	// +optional
 	bearer *dagger.Secret,
 ) (string, error) {
 	c := dag.Container().
 		From("curlimages/curl:8.9.1").
-		WithEnvVariable("PROMETHEUS_URL", server)
+		WithEnvVariable("PROMETHEUS_URL", m.server)
 
 	if bearer != nil {
 		c = c.WithSecretVariable("BEARER", bearer)
