@@ -9,7 +9,6 @@ import (
 
 func New(
 	// prometheus server URL
-	// +default="Hello"
 	prometheusurl string,
 ) *Prometheus {
 	return &Prometheus{
