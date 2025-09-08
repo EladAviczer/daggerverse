@@ -1,17 +1,3 @@
-// A generated module for Prometheus functions
-//
-// This module has been generated via dagger init and serves as a reference to
-// basic module structure as you get started with Dagger.
-//
-// Two functions have been pre-created. You can modify, delete, or add to them,
-// as needed. They demonstrate usage of arguments and return types using simple
-// echo and grep commands. The functions can be called from the dagger CLI or
-// from one of the SDKs.
-//
-// The first line in this comment block is a short description line and the
-// rest is a long description with more detail on the module's purpose or usage,
-// if appropriate. All modules should have a short description.
-
 package main
 
 import (
@@ -23,20 +9,20 @@ import (
 
 func New(
 	// prometheus server URL
-	server string,
+	// +default="Hello"
+	prometheusurl string,
 ) *Prometheus {
 	return &Prometheus{
-		server: server,
+		BaseURL: prometheusurl,
 	}
 }
 
 type Prometheus struct {
-	// prometheus server URL
-	server string // +private
+	BaseURL string
 }
 
 // PromQl runs an *instant* PromQL query via /api/v1/query (JSON output).
-func (m *Prometheus) PromQl(
+func (p *Prometheus) PromQl(
 	ctx context.Context,
 	// query in PromQL format
 	promQuery string,
@@ -45,7 +31,7 @@ func (m *Prometheus) PromQl(
 ) (string, error) {
 	c := dag.Container().
 		From("curlimages/curl:8.9.1").
-		WithEnvVariable("PROMETHEUS_URL", m.server).
+		WithEnvVariable("PROMETHEUS_URL", p.BaseURL).
 		WithEnvVariable("PROM_QUERY", promQuery)
 
 	if bearer != nil {
@@ -63,13 +49,14 @@ func (m *Prometheus) PromQl(
 }
 
 // FiringAlerts queries the /api/v1/alerts endpoint to list all firing alerts.
-func (m *Prometheus) FiringAlerts(
+func (p *Prometheus) FiringAlerts(
 	ctx context.Context,
 	// +optional
 	bearer *dagger.Secret,
 ) (string, error) {
-	alertsURL := strings.TrimRight(m.server, "/") + "/api/v1/alerts"
-
+	fmt.Println(p.BaseURL)
+	alertsURL := strings.TrimRight(p.BaseURL, "/") + "/api/v1/alerts"
+	fmt.Println(alertsURL)
 	c := dag.Container().From("curlimages/curl:8.9.1")
 
 	// add bearer only when provided
@@ -89,14 +76,14 @@ func (m *Prometheus) FiringAlerts(
 }
 
 // Targets queries the /api/v1/targets endpoint to list all targets.
-func (m *Prometheus) Targets(
+func (p *Prometheus) Targets(
 	ctx context.Context,
 	// +optional
 	bearer *dagger.Secret,
 ) (string, error) {
 	c := dag.Container().
 		From("curlimages/curl:8.9.1").
-		WithEnvVariable("PROMETHEUS_URL", m.server)
+		WithEnvVariable("PROMETHEUS_URL", p.BaseURL)
 
 	if bearer != nil {
 		c = c.WithSecretVariable("BEARER", bearer)
@@ -110,14 +97,14 @@ func (m *Prometheus) Targets(
 }
 
 // Rules queries the /api/v1/rules endpoint to list all alerting and recording rules.
-func (m *Prometheus) Rules(
+func (p *Prometheus) Rules(
 	ctx context.Context,
 	// +optional
 	bearer *dagger.Secret,
 ) (string, error) {
 	c := dag.Container().
 		From("curlimages/curl:8.9.1").
-		WithEnvVariable("PROMETHEUS_URL", m.server)
+		WithEnvVariable("PROMETHEUS_URL", p.BaseURL)
 
 	if bearer != nil {
 		c = c.WithSecretVariable("BEARER", bearer)
