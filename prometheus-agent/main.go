@@ -27,6 +27,8 @@ func (m *PrometheusAgnet) Ask(
 		WithPrompt(`You are an expert on prometheus and TSDB . You have been given
 a prometheus module that already has tools and the ability to connect to the database to run PromQL queries and more.
 please use the server argument to connect to the server.
+for understanding PromQL queries ues the path /api/v1/label/__name__/values of the $server before running any promql.
+when asked for PromQL  be percise and concise and don't run multiple queries.
 The question is: $question
 
 DO NOT STOP UNTIL YOU HAVE ANSWERED THE QUESTION COMPLETELY.`).
