@@ -4,10 +4,10 @@ import (
 	"context"
 )
 
-type PrometheusAgnet struct{}
+type PrometheusAgent struct{}
 
 // Ask queries the Prometheus server with a natural language question.
-func (m *PrometheusAgnet) Ask(
+func (m *PrometheusAgent) Ask(
 	ctx context.Context,
 	// the prometheus server URL to use
 	server string,

@@ -1,5 +1,5 @@
 {
-  "name": "prometheus-agnet",
+  "name": "prometheus-agent",
   "engineVersion": "v0.18.16",
   "sdk": {
     "source": "go"
